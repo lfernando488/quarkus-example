@@ -47,10 +47,6 @@ public class ProductController {
     @PATCH
     @Path("/{id}")
     public Product partialUpdate(@PathParam("id") Long id, Product product){
-        Product existing = productService.findById(id);
-
-        if(product.name != null) existing.name = product.name;
-        if(product.price != null) existing.price = product.price;
-        return existing;
+        return productService.partialUpdate(id, product);
     }
 }

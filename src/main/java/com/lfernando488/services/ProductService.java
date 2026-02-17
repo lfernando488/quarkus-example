@@ -44,4 +44,18 @@ public class ProductService {
     public void delete(Long id) {
         productRepository.deleteById(id);
     }
+
+    @Transactional
+    public Product partialUpdate(Long id, Product updated) {
+
+        Product existing = productRepository.findById(id);
+
+        if (existing == null) throw new RuntimeException("Not found!");
+
+        if (updated.name != null) existing.name = updated.name;
+
+        if (updated.price != null) existing.price = updated.price;
+
+        return existing; // Hibernate salva automaticamente
+    }
 }
