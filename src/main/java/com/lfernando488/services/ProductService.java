@@ -5,6 +5,9 @@ import com.lfernando488.repositories.ProductRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+
 
 import java.util.List;
 
@@ -14,13 +17,14 @@ public class ProductService {
     @Inject
     ProductRepository productRepository;
 
-    //@Inject
-    //@Channel("product-out")
-    //Emiter<Product> emitter;
+    @Inject
+    @Channel("products")
+    Emitter<String> emitter;
 
+    @Transactional
     public Product create(Product product){
         productRepository.persist(product);
-        //emitter.send(product);
+        emitter.send("Novo produto: " + product.name); // Envio ao Kafka
         return product;
     }
 
